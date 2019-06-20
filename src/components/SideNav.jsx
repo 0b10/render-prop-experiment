@@ -13,6 +13,9 @@ const StyledLi = styled.li`
   border: 1px solid #eeeeee;
   color: black;
   text-align: center;
+  background-color: ${({ theme }) => theme.secondary};
+  ${({ theme }) => theme.name};
+  ${({ theme }) => theme.border};
 `;
 
 const StyledAnchor = styled.a`
@@ -22,16 +25,25 @@ const StyledAnchor = styled.a`
 export class SideNav extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    // Store stuff
+    this.themeStore = this.props.themeStore;
+    this.getTheme = this.props.getTheme;
+    const { themeChange } = this.props.eventNames;
+    this.themeChange = themeChange; // Decouple event names
+  }
+
+  componentWillMount() {
+    this.themeStore.on(this.themeChange, () => this.forceUpdate());
   }
 
   render() {
+    const theme = this.getTheme();
     return (
       <React.Fragment>
         <StyledUl>
           {this.props.items.map(({ url, text }) => (
             <StyledAnchor key={text} href={url}>
-              <StyledLi>{text}</StyledLi>
+              <StyledLi theme={theme}>{text}</StyledLi>
             </StyledAnchor>
           ))}
         </StyledUl>
@@ -41,5 +53,10 @@ export class SideNav extends PureComponent {
 }
 
 SideNav.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getTheme: PropTypes.func.isRequired,
+  themeStore: PropTypes.object.isRequired,
+  eventNames: PropTypes.shape({
+    themeChange: PropTypes.string.isRequired
+  }).isRequired
 };

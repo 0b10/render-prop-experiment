@@ -6,6 +6,7 @@ const StyledTitle = styled.h2`
   margin: 0px;
   text-align: center;
   text-transform: capitalize;
+  ${({ theme }) => theme.text.title}
 `;
 
 const StyledText = styled.p`
@@ -14,6 +15,7 @@ const StyledText = styled.p`
   text-overflow: elipsis;
   overflow: hidden;
   max-height: 180px;
+  ${({ theme }) => theme.text.primary}
 `;
 
 const StyledTagline = styled.ul`
@@ -29,6 +31,7 @@ const StyledTag = styled.li`
   padding: 4px 7px;
   border: 1px solid #999999;
   border-radius: 10px;
+  ${({ theme }) => theme.text.secondary}
 `;
 
 const ContentContainer = styled.div`
@@ -46,7 +49,7 @@ const ImgContainer = styled.div`
 `;
 
 const ItemContainer = styled.div`
-  border: 1px solid #dddddd;
+  ${({ theme }) => theme.border}
   margin: 0px 30px 30px 0px;
   padding: 30px;
   border-radius: 15px;
@@ -62,23 +65,39 @@ const StyledHr = styled.hr`
 `;
 
 export class ContentItem extends PureComponent {
+  constructor(props) {
+    super(props);
+    // Store stuff
+    this.themeStore = this.props.themeStore;
+    this.getTheme = this.props.getTheme;
+    const { themeChange } = this.props.eventNames;
+    this.themeChange = themeChange; // Decouple event names
+  }
+
+  componentWillMount() {
+    this.themeStore.on(this.themeChange, () => this.forceUpdate());
+  }
+
   render() {
     const { title, body, imgUrl, imgAltText, tags } = this.props.content;
+    const theme = this.getTheme();
     return (
       <React.Fragment>
-        <ItemContainer>
-          <StyledTitle>{title}</StyledTitle>
+        <ItemContainer theme={theme}>
+          <StyledTitle theme={theme}>{title}</StyledTitle>
           <StyledHr />
           <ContentContainer>
             <ImgContainer>
               <StyledImg src={imgUrl} alt={imgAltText} />
             </ImgContainer>
             <div>
-              <StyledText>{body}</StyledText>
+              <StyledText theme={theme}>{body}</StyledText>
               <StyledHr />
               <StyledTagline>
                 {tags.map(tagName => (
-                  <StyledTag key={tagName}>{tagName}</StyledTag>
+                  <StyledTag theme={theme} key={tagName}>
+                    {tagName}
+                  </StyledTag>
                 ))}
               </StyledTagline>
             </div>
@@ -96,5 +115,10 @@ ContentItem.propTypes = {
     imgUrl: PropTypes.string.isRequired,
     imgAltText: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired
-  })
+  }),
+  getTheme: PropTypes.func.isRequired,
+  themeStore: PropTypes.object.isRequired,
+  eventNames: PropTypes.shape({
+    themeChange: PropTypes.string.isRequired
+  }).isRequired
 };

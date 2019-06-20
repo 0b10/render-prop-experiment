@@ -20,11 +20,12 @@ const StyledNavBar = styled.ul`
 
 const StyledNavItem = styled.li`
   padding: 10px 10px;
-  border: 1px solid #999999;
   text-align: center;
   min-width: 100px;
   text-transform: capitalize;
-  color: #000000;
+  font-weight: bold;
+  ${({ theme }) => theme.name}
+  ${({ theme }) => theme.border}
 `;
 
 const StyledAnchor = styled.a`
@@ -40,20 +41,21 @@ export class Nav extends Component {
     // Store stuff
     this.themeStore = this.props.themeStore;
     this.getTheme = this.props.getTheme;
-    const { changeEvent } = this.props.eventNames;
-    this.changeEvent = changeEvent; // Decouple event names
+    const { themeChange } = this.props.eventNames;
+    this.themeChange = themeChange; // Decouple event names
   }
   componentWillMount() {
-    this.themeStore.on(this.changeEvent, () => this.forceUpdate());
+    this.themeStore.on(this.themeChange, () => this.forceUpdate());
   }
 
   render() {
+    const theme = this.getTheme();
     return (
       <React.Fragment>
-        <StyledNavBar theme={this.getTheme()}>
+        <StyledNavBar theme={theme}>
           {this.props.items.map(({ text, uri }) => (
             <StyledAnchor key={text} href={uri}>
-              <StyledNavItem>{text}</StyledNavItem>
+              <StyledNavItem theme={theme}>{text}</StyledNavItem>
             </StyledAnchor>
           ))}
         </StyledNavBar>
@@ -72,6 +74,6 @@ Nav.propTypes = {
   getTheme: PropTypes.func.isRequired,
   themeStore: PropTypes.object.isRequired,
   eventNames: PropTypes.shape({
-    changeEvent: PropTypes.string.isRequired
+    themeChange: PropTypes.string.isRequired
   }).isRequired
 };
