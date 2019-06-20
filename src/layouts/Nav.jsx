@@ -1,6 +1,13 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+
+/**
+ * Required theme properties:
+ * {
+ *  primary, // background
+ * }
+ */
 
 const StyledNavBar = styled.ul`
   list-style-type: none;
@@ -8,6 +15,7 @@ const StyledNavBar = styled.ul`
   display: flex;
   flex-direction: row;
   margin-bottom: 40px;
+  background: ${({ theme }) => theme.primary};
 `;
 
 const StyledNavItem = styled.li`
@@ -25,11 +33,24 @@ const StyledAnchor = styled.a`
   text-decoration: none;
 `;
 
-export class Nav extends PureComponent {
+export class Nav extends Component {
+  constructor(props) {
+    super(props);
+
+    // Store stuff
+    this.themeStore = this.props.themeStore;
+    this.getTheme = this.props.getTheme;
+    const { changeEvent } = this.props.eventNames;
+    this.changeEvent = changeEvent; // Decouple event names
+  }
+  componentWillMount() {
+    this.themeStore.on(this.changeEvent, () => this.forceUpdate());
+  }
+
   render() {
     return (
       <React.Fragment>
-        <StyledNavBar>
+        <StyledNavBar theme={this.getTheme()}>
           {this.props.items.map(({ text, uri }) => (
             <StyledAnchor key={text} href={uri}>
               <StyledNavItem>{text}</StyledNavItem>
@@ -47,5 +68,10 @@ Nav.propTypes = {
       text: PropTypes.string.isRequired,
       uri: PropTypes.string.isRequired
     })
-  )
+  ),
+  getTheme: PropTypes.func.isRequired,
+  themeStore: PropTypes.object.isRequired,
+  eventNames: PropTypes.shape({
+    changeEvent: PropTypes.string.isRequired
+  }).isRequired
 };

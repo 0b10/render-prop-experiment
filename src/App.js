@@ -9,12 +9,16 @@ import {
   SideBar
 } from "./layouts";
 import { SideNav, ContentItem } from "./components";
+import { themeStore } from "./stores";
 
 function App() {
   return (
     <ColumnContainer>
       <Header>The Header</Header>
       <Nav
+        getTheme={themeStore.getTheme}
+        themeStore={themeStore}
+        eventNames={{ changeEvent: "change" }}
         items={[
           { text: "Home", uri: "#" },
           { text: "News", uri: "#" },
