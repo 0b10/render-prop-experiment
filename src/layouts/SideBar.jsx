@@ -2,11 +2,6 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledDiv = styled.div`
-  flex-grow: 1;
-  width: 200px;
-`;
-
 export class SideBar extends PureComponent {
   render() {
     return (
@@ -16,6 +11,11 @@ export class SideBar extends PureComponent {
     );
   }
 }
+
+const StyledDiv = styled.div`
+  flex-grow: 1;
+  width: 200px;
+`;
 
 SideBar.propTypes = {
   children: PropTypes.element.isRequired

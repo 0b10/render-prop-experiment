@@ -2,31 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const StyledNavBar = styled.ul`
-  list-style-type: none;
-  padding: 0px;
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 40px;
-  background: ${({ theme }) => theme.primary};
-`;
-
-const StyledNavItem = styled.li`
-  padding: 10px 10px;
-  text-align: center;
-  min-width: 100px;
-  text-transform: capitalize;
-  font-weight: bold;
-  ${({ theme }) => theme.name}
-  ${({ theme }) => theme.border}
-`;
-
-const StyledAnchor = styled.a`
-  display: inline;
-  flex-grow: 1;
-  text-decoration: none;
-`;
-
 export class Nav extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +31,31 @@ export class Nav extends Component {
     );
   }
 }
+
+const StyledNavBar = styled.ul`
+  list-style-type: none;
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+  background: ${({ theme }) => theme.primary};
+`;
+
+const StyledNavItem = styled.li`
+  padding: 10px 10px;
+  text-align: center;
+  min-width: 100px;
+  text-transform: capitalize;
+  font-weight: bold;
+  ${({ theme }) => theme.text.name}
+  ${({ theme }) => theme.border}
+`;
+
+const StyledAnchor = styled.a`
+  display: inline;
+  flex-grow: 1;
+  text-decoration: none;
+`;
 
 Nav.propTypes = {
   items: PropTypes.arrayOf(

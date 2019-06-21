@@ -13,7 +13,7 @@ export class Posts extends PureComponent {
       themeStore,
       getTheme,
       eventNames,
-      postStore,
+      postsStore,
       getPosts
     } = this.props;
 
@@ -26,17 +26,17 @@ export class Posts extends PureComponent {
     this.postsUpdated = eventNames.postsUpdated;
     this.themeChange = eventNames.themeChange;
 
-    // postStore
-    this.postStore = postStore;
+    // postsStore
+    this.postsStore = postsStore;
     this.getPosts = getPosts;
   }
 
   componentWillMount() {
-    this.postStore.on(this.postsUpdated, () => this.forceUpdate());
+    this.postsStore.on(this.postsUpdated, () => this.forceUpdate());
   }
 
   componentWillUnmount() {
-    this.postStore.removeListener(this.postsUpdated, this);
+    this.postsStore.removeListener(this.postsUpdated, this);
   }
 
   render() {
@@ -92,8 +92,8 @@ class Post extends PureComponent {
               <StyledText theme={theme}>{body}</StyledText>
               <StyledHr />
               <StyledTagline>
-                {tags.map(tagName => (
-                  <StyledTag theme={theme} key={tagName}>
+                {tags.map((tagName, index) => (
+                  <StyledTag theme={theme} key={index}>
                     {tagName}
                   </StyledTag>
                 ))}
@@ -135,12 +135,16 @@ const StyledTagline = styled.ul`
 
 // Individual tag pills
 const StyledTag = styled.li`
-  display: inline;
-  margin-right: 10px;
-  padding: 4px 7px;
+  display: block;
+  float: left;
+  margin: 0px 10px 8px 0px;
+  padding: 3px 4px;
   border: 1px solid #999999;
   border-radius: 10px;
   ${({ theme }) => theme.text.secondary}
+  font-size: 0.8em;
+  min-width: 25px;
+  text-align: center;
 `;
 
 // Wraps post body, tagline, and image. Use it for layout
@@ -204,7 +208,7 @@ Posts.propTypes = {
   getTheme: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
   themeStore: PropTypes.object.isRequired,
-  postStore: PropTypes.object.isRequired,
+  postsStore: PropTypes.object.isRequired,
   eventNames: PropTypes.shape({
     themeChange: PropTypes.string.isRequired,
     postsUpdated: PropTypes.string.isRequired

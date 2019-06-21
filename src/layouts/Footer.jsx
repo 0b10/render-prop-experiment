@@ -2,11 +2,6 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledFooter = styled.footer`
-  padding: 50px;
-  text-align: center;
-`;
-
 export class Footer extends PureComponent {
   render() {
     return (
@@ -17,4 +12,14 @@ export class Footer extends PureComponent {
   }
 }
 
-Footer.propTypes = {};
+const StyledFooter = styled.footer`
+  padding: 50px;
+  text-align: center;
+`;
+
+Footer.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element.isRequired),
+    PropTypes.element
+  ])
+};

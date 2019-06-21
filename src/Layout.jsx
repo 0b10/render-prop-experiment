@@ -9,9 +9,9 @@ import {
   Nav,
   RowContainer,
   SideBar
-} from "../layouts";
-import { SideNav } from "../components";
-import { themeStore } from "../stores";
+} from "./layouts";
+import { SideNav } from "./components";
+import { themeStore } from "./stores";
 
 export class Layout extends PureComponent {
   render() {
@@ -23,7 +23,9 @@ export class Layout extends PureComponent {
           eventNames={{ themeChange: "change" }}
         >
           <ColumnContainer>
-            <Header>The Header</Header>
+            <Header>
+              <div>The Header</div>
+            </Header>
             <Nav
               getTheme={themeStore.getTheme}
               themeStore={themeStore}
@@ -54,7 +56,9 @@ export class Layout extends PureComponent {
               </SideBar>
               <Content>{this.props.children}</Content>
             </RowContainer>
-            <Footer>The Footer</Footer>
+            <Footer>
+              <div>The Footer</div>
+            </Footer>
           </ColumnContainer>
         </Background>
       </React.Fragment>

@@ -2,22 +2,6 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const RowWrapped = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`;
-
 export class ColumnContainer extends PureComponent {
   render() {
     return (
@@ -41,6 +25,22 @@ export class RowContainer extends PureComponent {
     return <React.Fragment>{RowType}</React.Fragment>;
   }
 }
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const RowWrapped = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
 
 ColumnContainer.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired

@@ -8,7 +8,8 @@ class ThemeStore extends EventEmitter {
      * @param {Object} border - styles for all borders
      * @param {Object} name - For the display names of elements - like navigation elements.
      * @param {Object} text - Various styles for text - primary: typically content text;
-     *  secondary: typically text that has diminished importance; title: typically headings.
+     *  secondary: typically text that has diminished importance; title: typically headings;
+     *  name: typically the display name for elements - like navigation items.
      * @param {string} background - The background colour
      * @param {string} primary - The primary colour.
      */
@@ -25,10 +26,10 @@ class ThemeStore extends EventEmitter {
         },
         title: {
           color: "#FFFFFF"
+        },
+        name: {
+          color: "#FFFFFF"
         }
-      },
-      name: {
-        color: "#FFFFFF"
       },
       border: {
         border: "1px solid #AAAAAA"
@@ -51,6 +52,9 @@ class ThemeStore extends EventEmitter {
         },
         title: {
           color: "#000000"
+        },
+        name: {
+          color: "#000000"
         }
       },
       border: {
@@ -61,6 +65,8 @@ class ThemeStore extends EventEmitter {
     this.handleAction = this.handleAction.bind(this);
     this.getTheme = this.getTheme.bind(this);
     this._theme = this.darkTheme;
+
+    this.setMaxListeners(0); // Lots of posts, and elements == lots of listeners
   }
 
   getTheme() {

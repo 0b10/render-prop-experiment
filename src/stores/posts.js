@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-class PostStore extends EventEmitter {
+class PostsStore extends EventEmitter {
   constructor() {
     super();
 
@@ -35,5 +35,5 @@ class PostStore extends EventEmitter {
   }
 }
 
-const postStore = new PostStore();
-export { postStore };
+const postsStore = new PostsStore();
+export { postsStore };

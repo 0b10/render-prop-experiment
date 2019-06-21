@@ -2,24 +2,6 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledUl = styled.ul`
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
-`;
-
-const StyledLi = styled.li`
-  padding: 10px 20px;
-  text-align: center;
-  background-color: ${({ theme }) => theme.secondary};
-  ${({ theme }) => theme.name};
-  ${({ theme }) => theme.border};
-`;
-
-const StyledAnchor = styled.a`
-  text-decoration: none;
-`;
-
 export class SideNav extends PureComponent {
   constructor(props) {
     super(props);
@@ -49,6 +31,24 @@ export class SideNav extends PureComponent {
     );
   }
 }
+
+const StyledUl = styled.ul`
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+`;
+
+const StyledLi = styled.li`
+  padding: 10px 20px;
+  text-align: center;
+  background-color: ${({ theme }) => theme.secondary};
+  ${({ theme }) => theme.text.name};
+  ${({ theme }) => theme.border};
+`;
+
+const StyledAnchor = styled.a`
+  text-decoration: none;
+`;
 
 SideNav.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -1,11 +1,12 @@
 import React from "react";
-import { Layout, RowContainer } from "./layouts";
+import { RowContainer } from "./layouts";
+import { Layout } from "./Layout";
 import { Posts } from "./components";
-import { themeStore, postStore } from "./stores";
+import { themeStore, postsStore } from "./stores";
 import { setTheme } from "./actions/theme";
 import { postsModel } from "./model";
 
-postStore.setModel(
+postsStore.setModel(
   postsModel,
   { postsReceived: "received" },
   { getPosts: postsModel.getPosts }
@@ -22,8 +23,8 @@ function App() {
         <Posts
           getTheme={themeStore.getTheme}
           themeStore={themeStore}
-          postStore={postStore}
-          getPosts={postStore.getPosts}
+          postsStore={postsStore}
+          getPosts={postsStore.getPosts}
           eventNames={{ themeChange: "change", postsUpdated: "update" }}
         />
       </RowContainer>
