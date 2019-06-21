@@ -14,11 +14,6 @@ import { SideNav } from "../components";
 import { themeStore } from "../stores";
 
 export class Layout extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     return (
       <React.Fragment>

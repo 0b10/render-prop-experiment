@@ -8,11 +8,6 @@ const StyledDiv = styled.div`
 `;
 
 export class Content extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     return (
       <React.Fragment>

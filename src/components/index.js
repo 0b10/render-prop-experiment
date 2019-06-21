@@ -1,2 +1,2 @@
-export { ContentItem } from "./ContentItem";
+export { Posts } from "./Post";
 export { SideNav } from "./SideNav";

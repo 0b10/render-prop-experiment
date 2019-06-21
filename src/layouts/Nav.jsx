@@ -2,13 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-/**
- * Required theme properties:
- * {
- *  primary, // background
- * }
- */
-
 const StyledNavBar = styled.ul`
   list-style-type: none;
   padding: 0px;

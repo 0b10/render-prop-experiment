@@ -10,8 +10,6 @@ const StyledUl = styled.ul`
 
 const StyledLi = styled.li`
   padding: 10px 20px;
-  border: 1px solid #eeeeee;
-  color: black;
   text-align: center;
   background-color: ${({ theme }) => theme.secondary};
   ${({ theme }) => theme.name};
