@@ -10,11 +10,12 @@ export class Posts extends PureComponent {
 
     // Store stuff
     const {
-      themeStore,
-      getTheme,
       eventNames,
+      getPosts,
+      getTheme,
+      loadPosts,
       postsStore,
-      getPosts
+      themeStore
     } = this.props;
 
     // themeStore
@@ -29,10 +30,34 @@ export class Posts extends PureComponent {
     // postsStore
     this.postsStore = postsStore;
     this.getPosts = getPosts;
+    this.loadPosts = loadPosts;
+
+    this.handleScrollLoader = this.handleScrollLoader.bind(this);
   }
 
-  componentWillMount() {
+  handleScrollLoader(entries) {
+    // entries should only have a length of 1 for this case
+    if (entries.length > 1)
+      throw Error(
+        `The number of postLoader scroll entries (${
+          entries.length
+        }) exceeds 1 - this MIGHT be undesirable`
+      );
+
+    const scrollingDown = entries[0].isIntersecting;
+    if (scrollingDown) this.loadPosts();
+  }
+
+  async componentWillMount() {
+    // When new posts are available
     this.postsStore.on(this.postsUpdated, () => this.forceUpdate());
+
+    // Infinite scroll
+    // ! await because sometimes undefined reference is passed to observe
+    const scrollObserver = await new IntersectionObserver(
+      this.handleScrollLoader
+    );
+    scrollObserver.observe(this.refs.postsLoader);
   }
 
   componentWillUnmount() {
@@ -40,18 +65,31 @@ export class Posts extends PureComponent {
   }
 
   render() {
+    const theme = this.getTheme();
     return (
-      <StyledPostsWrapper>
-        {this.getPosts().map((postObj, index) => (
-          <Post
-            key={index}
-            getTheme={this.getTheme}
-            themeStore={this.themeStore}
-            eventNames={this.eventNames}
-            content={{ ...postObj }}
-          />
-        ))}
-      </StyledPostsWrapper>
+      <React.Fragment>
+        <StyledPostsWrapper theme={theme}>
+          {this.getPosts().map((postObj, index) => (
+            <Post
+              key={index}
+              getTheme={this.getTheme}
+              themeStore={this.themeStore}
+              eventNames={this.eventNames}
+              content={{ ...postObj }}
+            />
+          ))}
+        </StyledPostsWrapper>
+        <StyledRowContainer>
+          <StyledHr theme={theme} />
+          <StyledLoader
+            ref="postsLoader"
+            theme={theme}
+            onClick={() => this.loadPosts()}
+          >
+            Load More
+          </StyledLoader>
+        </StyledRowContainer>
+      </React.Fragment>
     );
   }
 }
@@ -83,14 +121,14 @@ class Post extends PureComponent {
       <React.Fragment>
         <ItemContainer theme={theme}>
           <StyledTitle theme={theme}>{title}</StyledTitle>
-          <StyledHr />
+          <StyledHr theme={theme} />
           <ContentContainer>
             <ImgContainer>
               <StyledImg src={imgUrl} alt={imgAltText} />
             </ImgContainer>
             <div>
               <StyledText theme={theme}>{body}</StyledText>
-              <StyledHr />
+              <StyledHr theme={theme} />
               <StyledTagline>
                 {tags.map((tagName, index) => (
                   <StyledTag theme={theme} key={index}>
@@ -166,7 +204,7 @@ const ImgContainer = styled.div`
 // Wraps each post individually, with visual cues.
 const ItemContainer = styled.div`
   ${({ theme }) => theme.border}
-  margin: 0px 30px 30px 0px;
+  margin: 15px;
   padding: 30px;
   border-radius: 15px;
   max-width: 460px;
@@ -175,17 +213,40 @@ const ItemContainer = styled.div`
   flex-grow: 1;
 `;
 
-const StyledHr = styled.hr`
-  margin: 20px 0px;
-  border 1px solid #DDDDDD;
-`;
-
 // ~~~ For the Posts wrapper ~~~
 // Controls the layout of contents
 const StyledPostsWrapper = styled.div`
+  background-color: ${theme => theme.secondary};
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
+`;
+
+const StyledLoader = styled.button`
+  ${({ theme }) => theme.border};
+  ${({ theme }) => theme.text.secondary};
+  background-color: ${({ theme }) => theme.secondary};
+  border-radius: 5px;
+  height: 50px;
+  width: 75%;
+  &:hover {
+    ${({ theme }) => theme.text.secondaryHover};
+    background-color: ${({ theme }) => theme.secondaryHover};
+  }
+`;
+
+const StyledRowContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+// ~~~ All components ~~~
+const StyledHr = styled.hr`
+  margin: 20px 0px;
+  ${({ theme }) => theme.divider}
 `;
 
 // >>> PROPTYPES >>>

@@ -6,6 +6,8 @@ class ThemeStore extends EventEmitter {
     super();
     /**
      * @param {Object} border - styles for all borders
+     * @param {Object} divider- typically horizintal rules, or other elements that provide visual
+     *  divisions.      *
      * @param {Object} name - For the display names of elements - like navigation elements.
      * @param {Object} text - Various styles for text - primary: typically content text;
      *  secondary: typically text that has diminished importance; title: typically headings;
@@ -13,9 +15,12 @@ class ThemeStore extends EventEmitter {
      * @param {string} background - The background colour
      * @param {string} primary - The primary colour.
      */
+    // FIXME: create a better structure
+    // FIXME: use variables for colour
     this.darkTheme = {
       primary: "#0044EE",
       secondary: "#222222",
+      secondaryHover: "#333333",
       background: "#111111",
       text: {
         primary: {
@@ -23,6 +28,11 @@ class ThemeStore extends EventEmitter {
         },
         secondary: {
           color: "#999999"
+        },
+        secondaryHover: {
+          color: "#FFFFFF",
+          fontWeight: "bold",
+          fontSize: "1.01em"
         },
         title: {
           color: "#FFFFFF"
@@ -33,6 +43,9 @@ class ThemeStore extends EventEmitter {
       },
       border: {
         border: "1px solid #AAAAAA"
+      },
+      divider: {
+        border: "1px solid #222222"
       }
     };
 

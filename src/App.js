@@ -17,6 +17,7 @@ function App() {
   window.setTheme = setTheme;
   window.postsModel = postsModel;
 
+  // FIXME: change getPosts to loadPosts (also related behaviours)
   return (
     <Layout>
       <RowContainer wrap>
@@ -25,6 +26,7 @@ function App() {
           themeStore={themeStore}
           postsStore={postsStore}
           getPosts={postsStore.getPosts}
+          loadPosts={postsStore.loadPosts}
           eventNames={{ themeChange: "change", postsUpdated: "update" }}
         />
       </RowContainer>
